@@ -2,12 +2,12 @@
 <!DOCTYPE mapper  
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
-<mapper namespace="test">
+<mapper namespace="well">
 	<select id="selectAllWell" resultType="com.cover.entity.Well">
-		select * from well
+		select * from welllocation，wellstatus
 	</select>
-	<select id="selectWellByorderON" parameterType="string" resultType="com.cover.entity.Well">
-        select * from Well where orderON=#{orderON}
+	<select id="selectWellByWellNO" parameterType="string" resultType="com.cover.entity.Well">
+        select * from Well where WellNO=#{WellNO}
     </select>
  	<update id="updateWellById" parameterType="com.cover.entity.Well">
 	    update well 

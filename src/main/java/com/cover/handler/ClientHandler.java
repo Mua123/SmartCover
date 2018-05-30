@@ -8,12 +8,12 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
-import com.cover.entity.Well;
-import com.cover.service.WellService;
+import com.cover.entity.WellLocation;
+import com.cover.service.WellLocationService;
 
 public class ClientHandler extends IoHandlerAdapter{
 	@Resource 
-	private WellService wellService;
+	private WellLocationService wellService;
 	@Override
 	public void sessionCreated(IoSession session) throws Exception {
 		// TODO Auto-generated method stub
@@ -56,8 +56,8 @@ public class ClientHandler extends IoHandlerAdapter{
 		
         byte[] data = new byte[ioBuffer.limit()-ioBuffer.position()];
         ioBuffer.get(data);
-        Well well = new Well();
-        well.setId(1);
+        WellLocation well = new WellLocation();
+        well.setWellNO("TX-001");
         String s = new String(data,"UTF-8");
         if(s.startsWith("Up Cover"))
         	if(s.endsWith("Closed"))

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>数据表格</title>
+		<meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+		<meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+		<link rel="shortcut icon" href="favicon.ico">
+		<link href="http://localhost:8080/SmartCover/assets/table/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+		<link href="http://localhost:8080/SmartCover/assets/table/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+		<!-- Data Tables -->
+		<link href="http://localhost:8080/SmartCover/assets/table/dataTables.bootstrap.css" rel="stylesheet">
+
+		<link href="http://localhost:8080/SmartCover/assets/table/animate.css" rel="stylesheet">
+		<link href="http://localhost:8080/SmartCover/assets/table/style.css?v=4.1.0" rel="stylesheet">
+		<link href="http://localhost:8080/SmartCover/assets/table/bootstrap-table.min.css" rel="stylesheet">
+
+	</head>
+
+	<body class="gray-bg">
+		<!--<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="row">
+				<div class="col-sm-12">-->
+					<div class="ibox float-e-margins">
+						<div class="ibox-title">
+							<h5>井盖信息表<!--<small>分类，查找</small>--></h5>
+						</div>
+						<div class="ibox-content">
+							<table id="exampleTablePagination" data-query-params="queryParams" data-mobile-responsive="true" data-pagination="true" data-icon-size="outline" data-search="true">
+								<thead>
+									<tr>
+										<th data-field="id">ID</th>
+										<th data-field="orderON">井盖编号</th>
+										<th data-field="fLong">经度</th>
+										<th data-field="fLati">纬度</th>
+										<th data-field="UpCoverStatus">外井盖状态</th>
+										<th data-field="DownCoverStatus">内井盖状态</th>
+										<th data-field="VibratingStatus">井盖震动状态</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				<!--</div>
+			</div>
+		</div>-->
+
+		<!-- 全局js -->
+		<script src="http://localhost:8080/SmartCover/assets/table/jquery.min.js?v=2.1.4"></script>
+		<script src="http://localhost:8080/SmartCover/assets/table/bootstrap.min.js?v=3.3.6"></script>
+
+		<script src="http://localhost:8080/SmartCover/assets/table/jquery.jeditable.js"></script>
+
+		<!-- Data Tables -->
+		<script src="http://localhost:8080/SmartCover/assets/table/jquery.dataTables.js"></script>
+		<script src="http://localhost:8080/SmartCover/assets/table/dataTables.bootstrap.js"></script>
+
+		<!-- 自定义js -->
+		<script src="http://localhost:8080/SmartCover/assets/table/content.js?v=1.0.0"></script>
+
+		<!-- Page-Level Scripts -->
+		<script>
+			$(document).ready(function() {
+				var tbody = window.document.getElementById("tbody-result");
+				$.ajax({
+					url: "http://localhost:8080/SmartCover/getWellInfo.action",
+					type: "get",
+					dataType: "json",
+					success: function(e) {
+						var str = "";
+						var data = e.data;
+						for(var i = 0; i < e.data.length; i++) {
+						if(data[i].UpCoverStatus==1){
+							data[i].UpCoverStatus="关闭"
+						}	
+						if(data[i].UpCoverStatus==2){
+							data[i].UpCoverStatus="打开"
+						}
+						if(data[i].DownCoverStatus==1){
+							data[i].DownCoverStatus="关闭"
+						}
+						if(data[i].DownCoverStatus==2){
+							data[i].DownCoverStatus="打开"
+						}
+						if(data[i].VibratingStatus==1){
+							data[i].VibratingStatus="震动"
+						}
+						if(data[i].VibratingStatus==2){
+							data[i].VibratingStatus="震动取消"
+						}
+						}
+						//						for(var i = 0; i < data.length; i++) {
+						//							str += "<tr>" +
+						//								"<td>" + data[i].id + "</td>" +
+						//								"<td>" + data[i].orderON + "</td>" +
+						//								"<td>" + data[i].fLong + "</td>" +
+						//								"<td>" + data[i].fLati + "</td>" +
+						//								"<td>" + data[i].UpCoverStatus + "</td>" +
+						//								"<td>" + data[i].VibratingStatus + "</td>" +
+						//								"<td>" + data[i].DownCoverStatus + "</td>" +
+						//								"</tr>";
+						//						}
+						$('#exampleTablePagination').bootstrapTable({
+							data: data,
+							// mobileResponsive: true,
+							height: "500"
+						});
+						tbody.innerHTML = str;
+					},
+					error: function() {
+						alert("查询失败")
+					}
+				});
+
+//				$('.dataTables-example').dataTable();
+//
+//				/* Init DataTables */
+//				var oTable = $('#editable').dataTable();
+//
+//				/* Apply the jEditable handlers to the table */
+//				oTable.$('td').editable('../example_ajax.php', {
+//					"callback": function(sValue, y) {
+//						var aPos = oTable.fnGetPosition(this);
+//						oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+//					},
+//					"submitdata": function(value, settings) {
+//						return {
+//							"row_id": this.parentNode.getAttribute('id'),
+//							"column": oTable.fnGetPosition(this)[2]
+//						};
+//					},
+//
+//					"width": "90%",
+//					"height": "100%"
+//				});
+
+			});
+
+			function fnClickAddRow() {
+				$('#editable').dataTable().fnAddData([
+					"Custom row",
+					"New row",
+					"New row",
+					"New row",
+					"New row"
+				]);
+			}
+		</script>
+
+		<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+		<!--统计代码，可删除-->
+		<script src="http://localhost:8080/SmartCover/assets/table/bootstrap-table.min.js"></script>
+		<script src="http://localhost:8080/SmartCover/assets/table/bootstrap-table-mobile.min.js"></script>
+		<script src="http://localhost:8080/SmartCover/assets/table/bootstrap-table-zh-CN.min.js"></script>
+	</body>
+
+</html>

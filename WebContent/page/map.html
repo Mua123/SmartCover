@@ -1,0 +1,310 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+		<title>map展示</title>
+		<link rel="stylesheet" href="https://cache.amap.com/lbs/static/main.css" />
+		<script type="text/javascript" src="http://localhost:8080/SmartCover/assets/js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.2&key=2cffc190351aa0793ace36f497b7a805"></script>
+		<script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
+		<style type="text/css">
+			/*body {
+				font-size: 12px;
+			}*/
+			
+			/*.amap-info-close {
+				top: 10px;
+			}*/
+			
+			#search_style {
+				padding-top: 8px;
+				margin-left: 15px;
+			}
+			
+			#search_button {
+				width: 60px;
+				height: 30px;
+				background-color: #2597d3;
+				border: none;
+				color: white;
+				font-size: 16px;
+				border-radius: 3px;
+			}
+			
+			#search_button:hover {
+				//box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+			}
+			
+			#search_input {
+				width: 260px;
+				height: 30px;
+				/*box-shadow: 0px 2px 0px #c0c0c0;*/
+			}
+			
+			.amap-info-content {
+				padding: 0 0 2px 0px;
+			}
+			
+			.title {
+				margin: 0px;
+				color: white;
+				font-size: 12px;
+				background-color: rgba(0, 155, 255, 0.8);
+				line-height: 22px;
+				padding: 0px 0 0 0px;
+				font-weight: lighter;
+				letter-spacing: 1px;
+			}
+			
+			.content {
+				padding: 4px;
+				color: #666;
+				font-size: 12px;
+				line-height: 18px;
+			}
+			
+			.info {
+				border: solid 1px silver;
+				width: 260px;
+			}
+			
+			div.info-top {
+				position: relative;
+				background: none repeat scroll 0 0 #F9F9F9;
+				border-bottom: 1px solid #CCC;
+				border-radius: 5px 5px 0 0;
+			}
+			
+			div.info-top div {
+				display: inline-block;
+				color: #333333;
+				font-size: 14px;
+				font-weight: bold;
+				line-height: 31px;
+				padding: 0 10px;
+			}
+			
+			div.info-top img {
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				transition-duration: 0.25s;
+			}
+			
+			div.info-top img:hover {
+				box-shadow: 0px 0px 5px #000;
+			}
+			
+			div.info-middle {
+				font-size: 12px;
+				padding: 6px;
+				line-height: 20px;
+			}
+			
+			div.info-bottom {
+				height: 0px;
+				width: 100%;
+				clear: both;
+				text-align: center;
+			}
+			
+			div.info-bottom img {
+				position: relative;
+				z-index: 104;
+			}
+			
+			span {
+				margin-left: 5px;
+				font-size: 11px;
+			}
+			
+			.info-middle img {
+				float: right;
+				margin-right: 6px;
+			}
+			
+			div img {
+				float: right;
+				margin-right: 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<!--<div class="search_style">    
+      <ul class="search_content clearfix">
+       <li><label class="l_f">产品名称</label><input name="" type="text"  class="text_add" placeholder="输入品牌名称"  style=" width:250px"/></li>
+     <!--  <li><label class="l_f">添加时间</label><input class="inline laydate-icon" id="start" style=" margin-left:10px;"></li>
+       <li style="width:90px;"><button type="button" class="btn_search"><i class="icon-search"></i>查询</button></li>
+      </ul>
+    </div>-->
+
+		<div id="mapContainer" style="position:absolute; z-index:2">
+			<div id="search_style" style="position:absolute; z-index:1">
+				<select id="search_input" name="property">
+				</select>
+				<button id="search_button" type="button" onclick="findWellPosition();">查询</button>
+			</div>
+
+		</div>
+		<script type="text/javascript">
+			var map = new AMap.Map("mapContainer", {
+				resizeEnable: true,
+				zoom: 13,
+				center: [121.399, 31.317]
+			});
+			var infoWindow = [];
+			$.ajax({
+				url: "http://localhost:8080/SmartCover/getWellInfo.action",
+				type: "get",
+				dataType: "json",
+				success: function(e) {
+					for(var i = 0; i < e.data.length; i++) {
+						var jfong = [e.data[i].fLong, e.data[i].fLati];
+						var marker = new AMap.Marker({
+							position: jfong,
+							map: map
+						});
+						if(e.data[i].UpCoverStatus==1){
+							e.data[i].UpCoverStatus="关闭"
+						}	
+						if(e.data[i].UpCoverStatus==2){
+							e.data[i].UpCoverStatus="打开"
+						}
+						if(e.data[i].DownCoverStatus==1){
+							e.data[i].DownCoverStatus="关闭"
+						}
+						if(e.data[i].DownCoverStatus==2){
+							e.data[i].DownCoverStatus="打开"
+						}
+						if(e.data[i].VibratingStatus==1){
+							e.data[i].VibratingStatus="震动"
+						}
+						if(e.data[i].VibratingStatus==2){
+							e.data[i].VibratingStatus="震动取消"
+						}
+						marker.setMap(map);
+						marker.NO = i;
+						marker.orderON = e.data[i].orderON;
+						marker.UpCoverStatus = e.data[i].UpCoverStatus;
+						marker.VibratingStatus = e.data[i].VibratingStatus;
+						marker.DownCoverStatus = e.data[i].DownCoverStatus;
+						marker.on('click', markerClick);
+						//marker.emit('click', {
+						//	target: marker
+						//});
+
+					}
+				}
+			});
+
+			function markerClick(e) {
+				var i = e.target.NO;
+				infoWindow[i] = new AMap.InfoWindow({
+					content: "<div class='title'><b>" + e.target.orderON + '号井盖' + "</b></div><div class='content'>" +
+						"<img src='http://localhost:8080/SmartCover/images/通信井盖.jpg'><b>外井盖状态:</b>" + e.target.UpCoverStatus + "<br/>" +
+						"<b>内井盖状态:</b>" + e.target.DownCoverStatus + "<br/>" +
+						"<b>井盖震动状态:</b>" + e.target.VibratingStatus + "<br/>",
+					offset: new AMap.Pixel(0, -28),
+					size: new AMap.Size(250, 0)
+				})
+				infoWindow[i].open(map, e.target.getPosition());
+			}
+			map.setFitView();
+
+			$(document).ready(function() {
+				$("select[name=property]").empty(); //清空seletct的数据  
+				$.ajax({
+					type: "get", //post请求
+					url: "http://localhost:8080/SmartCover/getWellInfo.action", //请求后台action 根据需求请求自己的后台数据
+					//					data: {
+					//						"orderON": orderON
+					//					}, //传到后台的参数，后台需要编写get和set方法且和返回数据名相同。
+					dataType: "json", //预期服务器返回的数据类型
+					error: function() { //ajax错误的方法
+					},
+					success: function(e) { //ajax成功的方法 在里卖弄给select的<option>标签赋值
+						//向select中append、option标签
+						var optionString = "<option grade=\'请选择一级属性\' selected = \'selected\'>--请选择井盖号--</option>";
+						var beanList = e.data; //返回的json数据
+						if(beanList) { //判断
+							for(var i = 0; i < beanList.length; i++) { //遍历，动态赋值
+								optionString += "<option grade=\"" + beanList[i].orderON + "\" value=\"" + beanList[i].orderON + "\"";
+								optionString += ">" + beanList[i].orderON + "</option>"; //动态添加数据  
+							}
+							$("select[name=property]").append(optionString); // 为当前name为asd的select添加数据。
+						}
+					}
+				});
+			});
+
+			function findWellPosition() {
+				var myselect = document.getElementById("search_input");
+				var index = myselect.selectedIndex;
+				var value = myselect.options[index].value;
+				if(value == "--请选择井盖号--") {
+					alert("请选择井盖号！")
+				} else {
+					$.ajax({
+						type: "POST",
+						data: {
+							wellOrder: value,
+						},
+						url: "http://localhost:8080/SmartCover/getWellData.action",
+						dataType: "json",
+						success: function(e) {
+							console.log(e)
+							map.setZoom(13);
+							map.panTo([e.fLong, e.fLati]);
+						}
+					});
+				}
+			}
+
+			function createInfoWindow(title, content) {
+				var info = document.createElement("div");
+				info.className = "info";
+				var top = document.createElement("div");
+				var titleD = document.createElement("div");
+				var closeX = document.createElement("img");
+				top.className = "info-top";
+				titleD.innerHTML = "xxx";
+				closeX.src = "https://webapi.amap.com/images/close2.gif";
+				closeX.onclick = closeInfoWindow;
+				top.appendChild(titleD);
+				top.appendChild(closeX);
+				info.appendChild(top);
+
+				// 定义中部内容
+				var middle = document.createElement("div");
+				middle.className = "info-middle";
+				middle.style.backgroundColor = 'white';
+				middle.innerHTML = content;
+				info.appendChild(middle);
+
+				// 定义底部内容
+				var bottom = document.createElement("div");
+				bottom.className = "info-bottom";
+				bottom.style.position = 'relative';
+				bottom.style.top = '0px';
+				bottom.style.left = '-100px';
+
+				//bottom.style.margin = '0 auto';
+				var sharp = document.createElement("img");
+				sharp.src = "https://webapi.amap.com/images/sharp.png";
+				bottom.appendChild(sharp);
+				info.appendChild(bottom);
+				return info;
+			}
+
+			function closeInfoWindow() {
+				map.clearInfoWindow();
+			}
+		</script>
+	</body>
+
+</html>

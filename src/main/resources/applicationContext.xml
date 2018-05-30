@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+			http://www.springframework.org/schema/mvc 
+			http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+			http://www.springframework.org/schema/context 
+			http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+			http://www.springframework.org/schema/aop 
+			http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+			http://www.springframework.org/schema/tx 
+			http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+		    http://www.springframework.org/schema/util 
+	        http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+			
+		<bean id="springContextHelper" class="com.cover.util.SpringContextHelper"></bean>  
+		<!-- 1.加载数据库配置的属性文件 -->	
+		<context:property-placeholder location="classpath:jdbc.properties"/>
+		
+		<!-- 2.包扫描:dao,service -->
+		<context:component-scan base-package="com.cover.dao,com.cover.service"/>
+		
+		<!-- 设置消息处理手段 -->
+		<bean id="ClientHandler" class="com.cover.handler.ClientHandler">
+		</bean>
+		
+		<!-- 3,dataSource数据源 -->
+		<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+			<property name="driverClassName" value="${jdbc.driver}"/>
+			<property name="url" value="${jdbc.url}"/>
+			<property name="username" value="${jdbc.username}"/>
+			<property name="password" value="${jdbc.password}"/>
+            <property name="initialSize" value="3"/>
+            <property name="minIdle" value="3"/>
+            <property name="maxActive" value="20"/>
+            <property name="maxWait" value="60000"/>
+            <property name="filters" value="stat,wall"/>
+		</bean>
+		
+		<!-- 4.SessionFactory -->
+		<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"/>
+			<property name="configLocation" value="classpath:SqlMapConfig.xml"/>
+			<property name="mapperLocations" value="classpath:com/cover/mapper/*.xml"></property>
+		</bean>
+		
+		<!-- 5.事务管理 -->
+		<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+			<property name="dataSource" ref="dataSource"/>
+		</bean>
+		
+		<!-- 事务通知 -->
+		<tx:advice id="txAdivce" transaction-manager="txManager">
+			<tx:attributes>
+				<tx:method name="insert*" propagation="REQUIRED"/>
+				<tx:method name="update*" propagation="REQUIRED"/>
+				<tx:method name="delete*" propagation="REQUIRED"/>
+				<tx:method name="save*" propagation="REQUIRED"/>
+				
+				<tx:method name="find*" read-only="false"/>
+				<tx:method name="get*" read-only="false"/>
+				<tx:method name="view*" read-only="false"/>
+			</tx:attributes>
+		</tx:advice>
+		
+		<aop:config>
+			<aop:pointcut expression="execution(* com.cover.service.*.*(..))" id="txPointcut"/>
+			<aop:advisor advice-ref="txAdivce" pointcut-ref="txPointcut"/>
+		</aop:config>
+
+		
+		<!-- 开启事务注解驱动 -->
+	    <!-- <tx:annotation-driven transaction-manager="txManager" /> -->
+	
+</beans>

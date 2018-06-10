@@ -3,7 +3,10 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="well">
-	<select id="selectAllWell" resultType="com.cover.entity.Well">
+	<select id="selectAllWellLocaiton" resultType="com.cover.entity.Well">
+		select * from welllocation，wellstatus
+	</select>
+	<select id="selectAllWellStatus" resultType="com.cover.entity.Well">
 		select * from welllocation，wellstatus
 	</select>
 	<select id="selectWellByWellNO" parameterType="string" resultType="com.cover.entity.Well">

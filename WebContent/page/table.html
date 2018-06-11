@@ -35,8 +35,8 @@
 							<table id="exampleTablePagination" data-query-params="queryParams" data-mobile-responsive="true" data-pagination="true" data-icon-size="outline" data-search="true">
 								<thead>
 									<tr>
-										<th data-field="id">ID</th>
-										<th data-field="orderON">井盖编号</th>
+										<th data-field="Id">ID</th>
+										<th data-field="WellNo">井盖编号</th>
 										<th data-field="fLong">经度</th>
 										<th data-field="fLati">纬度</th>
 										<th data-field="UpCoverStatus">外井盖状态</th>
@@ -69,7 +69,7 @@
 			$(document).ready(function() {
 				var tbody = window.document.getElementById("tbody-result");
 				$.ajax({
-					url: "http://localhost:8080/SmartCover/getWellInfo.action",
+					url: "http://localhost:8080/SmartCover/func/well/getWellInfo.action",
 					type: "get",
 					dataType: "json",
 					success: function(e) {

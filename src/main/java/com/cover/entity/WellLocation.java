@@ -1,19 +1,18 @@
 package com.cover.entity;
 
 public class WellLocation {
-	private String WellNO;
+	private String wellNo;
     private double fLong;
     private double fLati;
-    private String Province;
-    private String City;
-    private String District;
-    private String Road;
-    
-	public String getWellNO() {
-		return WellNO;
+    private String province;
+    private String city;
+    private String district;
+    private String street;
+	public String getWellNo() {
+		return wellNo;
 	}
-	public void setWellNO(String wellNO) {
-		WellNO = wellNO;
+	public void setWellNo(String wellNo) {
+		this.wellNo = wellNo;
 	}
 	public double getfLong() {
 		return fLong;
@@ -28,27 +27,27 @@ public class WellLocation {
 		this.fLati = fLati;
 	}
 	public String getProvince() {
-		return Province;
+		return province;
 	}
 	public void setProvince(String province) {
-		Province = province;
+		this.province = province;
 	}
 	public String getCity() {
-		return City;
+		return city;
 	}
 	public void setCity(String city) {
-		City = city;
+		this.city = city;
 	}
 	public String getDistrict() {
-		return District;
+		return district;
 	}
 	public void setDistrict(String district) {
-		District = district;
+		this.district = district;
 	}
-	public String getRoad() {
-		return Road;
+	public String getStreet() {
+		return street;
 	}
-	public void setRoad(String road) {
-		Road = road;
-	}       
+	public void setStreet(String street) {
+		this.street = street;
+	}     
 }

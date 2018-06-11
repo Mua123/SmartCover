@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import com.cover.entity.Well;
 import com.cover.entity.WellLocation;
+import com.cover.entity.WellStatus;
 
-public interface WellLocationService {    
-    public List<WellLocation> selectAllWell();
+public interface WellService {    
+    public List<Well> selectAllWell();
     public WellLocation selectWellByWellNO(Serializable WellNO);
-    public void updateWellById(WellLocation well);
+    public void updateWellById(WellStatus well);
 }  

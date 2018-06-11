@@ -3,39 +3,36 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="well">
-	<select id="selectAllWellLocaiton" resultType="com.cover.entity.Well">
-		select * from welllocation，wellstatus
+ 	<resultMap type="com.cover.entity.Well" id="WellResultMap">
+       <!-- 用id属性来映射主键字段 -->
+       <!-- 用result属性来映射非主键字段 -->
+       <result column="well_ID" property="wellId"/>
+       <result column="well_No" property="wellNo"/>
+       <result column="up_cover_status" property="upCoverStatus"/>
+       <result column="down_cover_status" property="downCoverStatus"/>
+       <result column="vibrating_status" property="vibratingStatus"/>
+    </resultMap>
+    <select id="selectAllWell" resultType="com.cover.entity.Well" resultMap="WellResultMap">
+		select * from welllocation,wellstatus where welllocation.well_No=wellstatus.well_No
 	</select>
-	<select id="selectAllWellStatus" resultType="com.cover.entity.Well">
-		select * from welllocation，wellstatus
-	</select>
-	<select id="selectWellByWellNO" parameterType="string" resultType="com.cover.entity.Well">
-        select * from Well where WellNO=#{WellNO}
+	<select id="selectWellByWellNO" parameterType="string" resultType="com.cover.entity.WellLocation">
+        select * from welllocation where well_No=#{wellNo}
     </select>
- 	<update id="updateWellById" parameterType="com.cover.entity.Well">
-	    update well 
+ 	<update id="updateWellById" parameterType="com.cover.entity.WellStatus">
+	    update wellstatus 
 		<trim prefix="set" suffixOverrides=",">
-			<if test="fLong != 0">
-				fLong = #{fLong},
+			<if test="upCoverStatus != 0">
+				up_cover_status = #{upCoverStatus},
 			</if>
-			<if test="fLati != 0">
-				fLati = #{fLati},
+			<if test="vibratingStatus != 0">
+				vibrating_status = #{vibratingStatus},
 			</if>
-			<if test="orderON != null">
-				orderON = #{orderON},
-			</if>
-			<if test="UpCoverStatus != 0">
-				UpCoverStatus = #{UpCoverStatus},
-			</if>
-			<if test="VibratingStatus != 0">
-				VibratingStatus = #{VibratingStatus},
-			</if>
-			<if test="DownCoverStatus != 0">
-				DownCoverStatus = #{DownCoverStatus},
+			<if test="downCoverStatus != 0">
+				down_cover_status = #{downCoverStatus},
 			</if>
 		</trim>
 		<where>
-			id=#{id}
+			well_No=#{wellNo}
 		</where>
     </update>
 </mapper>

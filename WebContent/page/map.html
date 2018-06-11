@@ -7,9 +7,11 @@
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 		<title>map展示</title>
 		<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main.css?v=1.0?v=1.0" />
+
 		<script type="text/javascript" src="http://localhost:8080/SmartCover/assets/js/jquery-1.8.3.min.js"></script>
-		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.6&key=2cffc190351aa0793ace36f497b7a805&plugin=AMap.DistrictSearch"></script>
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.6&key=2cffc190351aa0793ace36f497b7a805&plugin=AMap.DistrictSearch&plugin=AMap.MarkerClusterer"></script>
 		<script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
+		<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
 		<style type="text/css">
 			/*body {
 				font-size: 12px;
@@ -182,7 +184,7 @@
 			map = new AMap.Map('mapContainer', {
 				resizeEnable: true,
 				center: [116.30946, 39.937629],
-				zoom: 3
+				zoom: 4
 			});
 			//行政区划查询
 			var opts = {
@@ -197,8 +199,9 @@
 			});
 			//信息窗体显示
 			var infoWindow = [];
+			var cluster, markers = [];
 			$.ajax({
-				url: "http://localhost:8080/SmartCover/func/well/getWellLocation.action",
+				url: "http://localhost:8080/SmartCover/func/well/getWellInfo.action",
 				type: "get",
 				dataType: "json",
 				success: function(e) {
@@ -206,6 +209,8 @@
 						var jfong = [e.data[i].fLong, e.data[i].fLati];
 						var marker = new AMap.Marker({
 							position: jfong,
+							content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+							offset: new AMap.Pixel(-15, -15),
 							map: map
 						});
 						if(e.data[i].UpCoverStatus == 1) {
@@ -228,7 +233,7 @@
 						}
 						marker.setMap(map);
 						marker.NO = i;
-						marker.orderON = e.data[i].orderON;
+						marker.WellNo = e.data[i].WellNo;
 						marker.UpCoverStatus = e.data[i].UpCoverStatus;
 						marker.VibratingStatus = e.data[i].VibratingStatus;
 						marker.DownCoverStatus = e.data[i].DownCoverStatus;
@@ -236,19 +241,26 @@
 						//marker.emit('click', {
 						//	target: marker
 						//});
-
+						markers.push(marker);
 					}
+					addCluster();
 				}
 			});
+
+			function addCluster() {
+				cluster = new AMap.MarkerClusterer(map, markers, {
+					gridSize: 80
+				});
+			}
 
 			function markerClick(e) {
 				var i = e.target.NO;
 				infoWindow[i] = new AMap.InfoWindow({
-					content: "<div class='title'><b>" + e.target.orderON + '号井盖' + "</b></div><div class='content'>" +
+					content: "<div class='title'><b>" + e.target.WellNo + '号井盖' + "</b></div><div class='content'>" +
 						"<img src='http://localhost:8080/SmartCover/images/通信井盖.jpg'><b>外井盖状态:</b>" + e.target.UpCoverStatus + "<br/>" +
 						"<b>内井盖状态:</b>" + e.target.DownCoverStatus + "<br/>" +
 						"<b>井盖震动状态:</b>" + e.target.VibratingStatus + "<br/>",
-					offset: new AMap.Pixel(0, -28),
+					//					offset: new AMap.Pixel(0, -28),
 					size: new AMap.Size(250, 0)
 				})
 				infoWindow[i].open(map, e.target.getPosition());
@@ -260,7 +272,7 @@
 				$("select[name=property]").empty(); //清空seletct的数据  
 				$.ajax({
 					type: "get", //post请求
-					url: "http://localhost:8080/SmartCover/getWellInfo.action", //请求后台action 根据需求请求自己的后台数据
+					url: "http://localhost:8080/SmartCover/func/well/getWellInfo.action", //请求后台action 根据需求请求自己的后台数据
 					//					data: {
 					//						"orderON": orderON
 					//					}, //传到后台的参数，后台需要编写get和set方法且和返回数据名相同。
@@ -273,8 +285,8 @@
 						var beanList = e.data; //返回的json数据
 						if(beanList) { //判断
 							for(var i = 0; i < beanList.length; i++) { //遍历，动态赋值
-								optionString += "<option grade=\"" + beanList[i].orderON + "\" value=\"" + beanList[i].orderON + "\"";
-								optionString += ">" + beanList[i].orderON + "</option>"; //动态添加数据  
+								optionString += "<option grade=\"" + beanList[i].WellNo + "\" value=\"" + beanList[i].WellNo + "\"";
+								optionString += ">" + beanList[i].WellNo + "</option>"; //动态添加数据  
 							}
 							$("select[name=property]").append(optionString); // 为当前name为asd的select添加数据。
 						}
@@ -294,11 +306,11 @@
 						data: {
 							wellOrder: value,
 						},
-						url: "http://localhost:8080/SmartCover/getWellData.action",
+						url: "http://localhost:8080/SmartCover/func/well/getWellData.action",
 						dataType: "json",
 						success: function(e) {
 							console.log(e)
-							map.setZoom(13);
+							map.setZoom(15);
 							map.panTo([e.fLong, e.fLati]);
 						}
 					});
@@ -414,6 +426,8 @@
 			}
 
 			function setCenter(obj) {
+				console.log(obj[obj.options.selectedIndex].label)
+				map.setZoom(15);
 				map.setCenter(obj[obj.options.selectedIndex].center)
 			}
 		</script>

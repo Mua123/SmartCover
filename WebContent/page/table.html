@@ -27,27 +27,111 @@
 		<!--<div class="wrapper wrapper-content animated fadeInRight">
 			<div class="row">
 				<div class="col-sm-12">-->
-					<div class="ibox float-e-margins">
-						<div class="ibox-title">
-							<h5>井盖信息表<!--<small>分类，查找</small>--></h5>
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="btnadd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                        </button>
+						<h4 class="modal-title" id="myModalLabel">井盖录入</h4>
+					</div>
+					<div class="modal-body">
+						<!--井盖编号-->
+						<div class="form-group aaa clearfix">
+							<label class="col-sm-3 control-label">井盖编号：</label>
+							<div class="col-sm-8">
+								<input id="plateNumber" class="form-control" type="text" aria-required="false" aria-invalid="true" class="error" maxlength="20" placeholder="格式:TX-XXX">
+								<span></span>
+							</div>
 						</div>
-						<div class="ibox-content">
-							<table id="exampleTablePagination" data-query-params="queryParams" data-mobile-responsive="true" data-pagination="true" data-icon-size="outline" data-search="true">
-								<thead>
-									<tr>
-										<th data-field="Id">ID</th>
-										<th data-field="WellNo">井盖编号</th>
-										<th data-field="fLong">经度</th>
-										<th data-field="fLati">纬度</th>
-										<th data-field="UpCoverStatus">外井盖状态</th>
-										<th data-field="DownCoverStatus">内井盖状态</th>
-										<th data-field="VibratingStatus">井盖震动状态</th>
-									</tr>
-								</thead>
-							</table>
+						<!--经度-->
+						<div class="form-group aaa  clearfix">
+							<label class="col-sm-3 control-label">经度：</label>
+							<div class="col-sm-8">
+								<input id="VINumber" class="form-control " type="text" aria-required="false" aria-invalid="true" class="error" maxlength="20" placeholder="必填">
+								<span></span>
+							</div>
+						</div>
+						<!--纬度-->
+						<div class="form-group aaa clearfix">
+							<label class="col-sm-3 control-label">纬度：</label>
+							<div class="col-sm-8">
+								<input id="engineNumber" class="form-control " type="text" aria-required="false" aria-invalid="true" class="error" maxlength="20" placeholder="必填">
+								<span></span>
+							</div>
+						</div>
+						<!--省份-->
+						<div class="form-group aaa clearfix">
+							<label class="col-sm-3 control-label">省份：</label>
+							<div class="col-sm-8">
+								<input id="carType" class="form-control " type="text" aria-required="false" aria-invalid="true" class="error" maxlength="20">
+								<span></span>
+							</div>
+						</div>
+						<!--城市-->
+						<div class="form-group aaa clearfix">
+							<label class="col-sm-3 control-label">城市：</label>
+							<div class="col-sm-8">
+								<input id="color" class="form-control " type="text" aria-required="false" aria-invalid="true" class="error" maxlength="20">
+								<span></span>
+							</div>
+						</div>
+						<!--区县-->
+						<div class="form-group aaa clearfix">
+							<label class="col-sm-3 control-label">区县：</label>
+							<div class="col-sm-8">
+								<input id="owernName" class="form-control " type="text" aria-required="false" aria-invalid="true" class="error" maxlength="20">
+								<span></span>
+							</div>
+						</div>
+						<!--街道-->
+						<div class="form-group aaa clearfix">
+							<label class="col-sm-3 control-label">街道：</label>
+							<div class="col-sm-8">
+								<input id="owernPhone" class="form-control " type="text" aria-required="false" aria-invalid="true" class="error" maxlength="20">
+								<span></span>
+							</div>
 						</div>
 					</div>
-				<!--</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                </button>
+						<button type="button" class="btn btn-primary demo2" id="submit">提交</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>井盖信息表<!--<small>分类，查找</small>--></h5>
+			</div>
+			<div class="ibox-content">
+				<form id="queryForm" action="merchantRecord.do" method="post" role="form" class="form-inline">
+					<div class="form-group" style="margin-right:90px">
+						<input name="search" type="text" placeholder="请输入" class="form-control">
+					</div>
+					<button id="btn-query" class="btn btn-primary" type="button" style="height:33px;margin-top:3px"><i class="glyphicon glyphicon-search"></i>&nbsp;搜索</button>
+					<!-- <button id='btn-adds' class="btn btn-primary" type="button" style="float:right;margin-top:-4px;" data-toggle="modal" data-target="#btnadds"><i class="glyphicon glyphicon-plus"></i>批量添加</button> -->
+					<button id='btn-add' class="btn btn-primary" type="button" style="float:right;margin-top:-4px;" data-toggle="modal" data-target="#btnadd"><i class="glyphicon glyphicon-plus"></i>&nbsp;添加</button>
+				</form>
+				<table id="exampleTablePagination" data-query-params="queryParams" data-mobile-responsive="true" data-pagination="true" data-icon-size="outline">
+					<thead>
+						<tr>
+							<th data-field="Id">ID</th>
+							<th data-field="WellNo">井盖编号</th>
+							<th data-field="fLong">经度</th>
+							<th data-field="fLati">纬度</th>
+							<th data-field="UpCoverStatus">外井盖状态</th>
+							<th data-field="DownCoverStatus">内井盖状态</th>
+							<th data-field="VibratingStatus">井盖震动状态</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<!--</div>
 			</div>
 		</div>-->
 
@@ -76,24 +160,24 @@
 						var str = "";
 						var data = e.data;
 						for(var i = 0; i < e.data.length; i++) {
-						if(data[i].UpCoverStatus==1){
-							data[i].UpCoverStatus="关闭"
-						}	
-						if(data[i].UpCoverStatus==2){
-							data[i].UpCoverStatus="打开"
-						}
-						if(data[i].DownCoverStatus==1){
-							data[i].DownCoverStatus="关闭"
-						}
-						if(data[i].DownCoverStatus==2){
-							data[i].DownCoverStatus="打开"
-						}
-						if(data[i].VibratingStatus==1){
-							data[i].VibratingStatus="震动"
-						}
-						if(data[i].VibratingStatus==2){
-							data[i].VibratingStatus="震动取消"
-						}
+							if(data[i].UpCoverStatus == 1) {
+								data[i].UpCoverStatus = "关闭"
+							}
+							if(data[i].UpCoverStatus == 2) {
+								data[i].UpCoverStatus = "打开"
+							}
+							if(data[i].DownCoverStatus == 1) {
+								data[i].DownCoverStatus = "关闭"
+							}
+							if(data[i].DownCoverStatus == 2) {
+								data[i].DownCoverStatus = "打开"
+							}
+							if(data[i].VibratingStatus == 1) {
+								data[i].VibratingStatus = "震动"
+							}
+							if(data[i].VibratingStatus == 2) {
+								data[i].VibratingStatus = "震动取消"
+							}
 						}
 						//						for(var i = 0; i < data.length; i++) {
 						//							str += "<tr>" +
@@ -118,27 +202,27 @@
 					}
 				});
 
-//				$('.dataTables-example').dataTable();
-//
-//				/* Init DataTables */
-//				var oTable = $('#editable').dataTable();
-//
-//				/* Apply the jEditable handlers to the table */
-//				oTable.$('td').editable('../example_ajax.php', {
-//					"callback": function(sValue, y) {
-//						var aPos = oTable.fnGetPosition(this);
-//						oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-//					},
-//					"submitdata": function(value, settings) {
-//						return {
-//							"row_id": this.parentNode.getAttribute('id'),
-//							"column": oTable.fnGetPosition(this)[2]
-//						};
-//					},
-//
-//					"width": "90%",
-//					"height": "100%"
-//				});
+				//				$('.dataTables-example').dataTable();
+				//
+				//				/* Init DataTables */
+				//				var oTable = $('#editable').dataTable();
+				//
+				//				/* Apply the jEditable handlers to the table */
+				//				oTable.$('td').editable('../example_ajax.php', {
+				//					"callback": function(sValue, y) {
+				//						var aPos = oTable.fnGetPosition(this);
+				//						oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+				//					},
+				//					"submitdata": function(value, settings) {
+				//						return {
+				//							"row_id": this.parentNode.getAttribute('id'),
+				//							"column": oTable.fnGetPosition(this)[2]
+				//						};
+				//					},
+				//
+				//					"width": "90%",
+				//					"height": "100%"
+				//				});
 
 			});
 

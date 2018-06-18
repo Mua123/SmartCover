@@ -197,82 +197,110 @@
 					getData(result.districtList[0]);
 				}
 			});
-			//信息窗体显示
-			var infoWindow = [];
-			var cluster, markers = [];
-			$.ajax({
-				url: "http://localhost:8080/SmartCover/func/well/getWellInfo.action",
-				type: "get",
-				dataType: "json",
-				success: function(e) {
-					for(var i = 0; i < e.data.length; i++) {
-						var jfong = [e.data[i].fLong, e.data[i].fLati];
-						var marker = new AMap.Marker({
-							position: jfong,
-							content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
-							offset: new AMap.Pixel(-15, -15),
-							map: map
-						});
-						if(e.data[i].UpCoverStatus == 1) {
-							e.data[i].UpCoverStatus = "关闭"
+			// 信息窗体显示
+			function infowindows() {
+				var infoWindow = [];
+				var cluster, markers = [];
+				$.ajax({
+					url: "http://localhost:8080/SmartCover/func/well/getWellInfo.action",
+					type: "get",
+					dataType: "json",
+					success: function(e) {
+						for(var i = 0; i < e.data.length; i++) {
+							var jfong = [e.data[i].fLong, e.data[i].fLati];
+							var marker = new AMap.Marker({
+								position: jfong,
+								content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+								offset: new AMap.Pixel(-15, -15),
+								map: map
+							});
+							if(e.data[i].UpCoverStatus == 1) {
+								e.data[i].UpCoverStatus = "关闭"
+							}
+							if(e.data[i].UpCoverStatus == 2) {
+								e.data[i].UpCoverStatus = "打开"
+							}
+							if(e.data[i].DownCoverStatus == 1) {
+								e.data[i].DownCoverStatus = "关闭"
+							}
+							if(e.data[i].DownCoverStatus == 2) {
+								e.data[i].DownCoverStatus = "打开"
+							}
+							if(e.data[i].VibratingStatus == 1) {
+								e.data[i].VibratingStatus = "震动"
+							}
+							if(e.data[i].VibratingStatus == 2) {
+								e.data[i].VibratingStatus = "震动取消"
+							}
+//							marker.setMap(map);//高德地图貌似不需要这步
+							marker.NO = i;
+							marker.WellNo = e.data[i].WellNo;
+							marker.UpCoverStatus = e.data[i].UpCoverStatus;
+							marker.VibratingStatus = e.data[i].VibratingStatus;
+							marker.DownCoverStatus = e.data[i].DownCoverStatus;
+							marker.on('click', markerClick);
+							//marker.emit('click', {
+							//	target: marker
+							//});
+							markers.push(marker);
 						}
-						if(e.data[i].UpCoverStatus == 2) {
-							e.data[i].UpCoverStatus = "打开"
-						}
-						if(e.data[i].DownCoverStatus == 1) {
-							e.data[i].DownCoverStatus = "关闭"
-						}
-						if(e.data[i].DownCoverStatus == 2) {
-							e.data[i].DownCoverStatus = "打开"
-						}
-						if(e.data[i].VibratingStatus == 1) {
-							e.data[i].VibratingStatus = "震动"
-						}
-						if(e.data[i].VibratingStatus == 2) {
-							e.data[i].VibratingStatus = "震动取消"
-						}
-						marker.setMap(map);
-						marker.NO = i;
-						marker.WellNo = e.data[i].WellNo;
-						marker.UpCoverStatus = e.data[i].UpCoverStatus;
-						marker.VibratingStatus = e.data[i].VibratingStatus;
-						marker.DownCoverStatus = e.data[i].DownCoverStatus;
-						marker.on('click', markerClick);
-						//marker.emit('click', {
-						//	target: marker
-						//});
-						markers.push(marker);
+						addCluster();
 					}
-					addCluster();
-				}
-			});
-
-			function addCluster() {
-				cluster = new AMap.MarkerClusterer(map, markers, {
-					gridSize: 80
 				});
+
+				function addCluster() {
+					cluster = new AMap.MarkerClusterer(map, markers, {
+						gridSize: 80
+					});
+				}
+
+				function markerClick(e) {
+					infowindows();
+					var i = e.target.NO;
+					infoWindow[i] = new AMap.InfoWindow({
+						content: "<div class='title'><b>" + e.target.WellNo + '号井盖' + "</b></div><div class='content'>" +
+							"<img src='http://localhost:8080/SmartCover/images/通信井盖.jpg'>" +
+							"<b>信号强度:</b>25<br/>" +
+							"<b>电池电压:</b>6.5V<br/>" +
+							"<b>当前温度:</b>27°C<br/>" +
+							"<b>当前湿度:</b>02%rh<br/>" +
+							"<b>外井盖状态:</b>" + e.target.UpCoverStatus + "<br/>" +
+							"<b>内井盖状态:</b>" + e.target.DownCoverStatus + "<br/>" +
+							"<b>井盖震动状态:</b>" + e.target.VibratingStatus + "<br/>",
+						size: new AMap.Size(250, 0)
+					})
+					infoWindow[i].open(map, e.target.getPosition());
+				}
+//				map.setFitView();//地图自适应显示
 			}
 
-			function markerClick(e) {
-				var i = e.target.NO;
-				infoWindow[i] = new AMap.InfoWindow({
-					content: "<div class='title'><b>" + e.target.WellNo + '号井盖' + "</b></div><div class='content'>" +
-						"<img src='http://localhost:8080/SmartCover/images/通信井盖.jpg'>" +
-						"<b>信号强度:</b>25<br/>" +
-						"<b>电池电压:</b>6.5V<br/>" +
-						"<b>当前温度:</b>27°C<br/>" +
-						"<b>当前湿度:</b>02%rh<br/>" +
-						"<b>外井盖状态:</b>" + e.target.UpCoverStatus + "<br/>" +
-						"<b>内井盖状态:</b>" + e.target.DownCoverStatus + "<br/>" +
-						"<b>井盖震动状态:</b>" + e.target.VibratingStatus + "<br/>",
-					size: new AMap.Size(250, 0)
-				})
-				infoWindow[i].open(map, e.target.getPosition());
-			}
-			map.setFitView();
+//			function addCluster() {
+//				cluster = new AMap.MarkerClusterer(map, markers, {
+//					gridSize: 80
+//				});
+//			}
+
+//			function markerClick(e) {
+//				var i = e.target.NO;
+//				infoWindow[i] = new AMap.InfoWindow({
+//					content: "<div class='title'><b>" + e.target.WellNo + '号井盖' + "</b></div><div class='content'>" +
+//						"<img src='http://localhost:8080/SmartCover/images/通信井盖.jpg'>" +
+//						"<b>信号强度:</b>25<br/>" +
+//						"<b>电池电压:</b>6.5V<br/>" +
+//						"<b>当前温度:</b>27°C<br/>" +
+//						"<b>当前湿度:</b>02%rh<br/>" +
+//						"<b>外井盖状态:</b>" + e.target.UpCoverStatus + "<br/>" +
+//						"<b>内井盖状态:</b>" + e.target.DownCoverStatus + "<br/>" +
+//						"<b>井盖震动状态:</b>" + e.target.VibratingStatus + "<br/>",
+//					size: new AMap.Size(250, 0)
+//				})
+//				infoWindow[i].open(map, e.target.getPosition());
+//			}
+//			map.setFitView();
 
 			//页面选择框初始化
 			$(document).ready(function() {
+				infowindows();
 				$("select[name=property]").empty(); //清空seletct的数据  
 				$.ajax({
 					type: "get", //post请求

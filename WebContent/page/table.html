@@ -96,9 +96,8 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                                </button>
-						<button type="button" class="btn btn-primary demo2" id="submit">提交</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭  </button>
+						<button type="button" class="btn btn-primary demo2" id="submit" onclick="addWell()">提交</button>
 					</div>
 				</div>
 			</div>
@@ -116,7 +115,7 @@
 					<!-- <button id='btn-adds' class="btn btn-primary" type="button" style="float:right;margin-top:-4px;" data-toggle="modal" data-target="#btnadds"><i class="glyphicon glyphicon-plus"></i>批量添加</button> -->
 					<button id='btn-add' class="btn btn-primary" type="button" style="float:right;margin-top:-4px;" data-toggle="modal" data-target="#btnadd"><i class="glyphicon glyphicon-plus"></i>&nbsp;添加</button>
 				</form>
-				<table id="exampleTablePagination" data-query-params="queryParams" data-mobile-responsive="true" data-pagination="true" data-icon-size="outline">
+				<table id="exampleTablePagination" data-query-params="queryParams" data-pagination="true" data-icon-size="outline">
 					<thead>
 						<tr>
 							<th data-field="Id">ID</th>
@@ -151,34 +150,14 @@
 		<!-- Page-Level Scripts -->
 		<script>
 			$(document).ready(function() {
-				var tbody = window.document.getElementById("tbody-result");
+//				var tbody = window.document.getElementById("tbody-result");
 				$.ajax({
 					url: "http://localhost:8080/SmartCover/func/well/getWellInfo.action",
 					type: "get",
 					dataType: "json",
 					success: function(e) {
-						var str = "";
+//						var str = "";
 						var data = e.data;
-						for(var i = 0; i < e.data.length; i++) {
-							if(data[i].UpCoverStatus == 1) {
-								data[i].UpCoverStatus = "关闭"
-							}
-							if(data[i].UpCoverStatus == 2) {
-								data[i].UpCoverStatus = "打开"
-							}
-							if(data[i].DownCoverStatus == 1) {
-								data[i].DownCoverStatus = "关闭"
-							}
-							if(data[i].DownCoverStatus == 2) {
-								data[i].DownCoverStatus = "打开"
-							}
-							if(data[i].VibratingStatus == 1) {
-								data[i].VibratingStatus = "震动"
-							}
-							if(data[i].VibratingStatus == 2) {
-								data[i].VibratingStatus = "震动取消"
-							}
-						}
 						//						for(var i = 0; i < data.length; i++) {
 						//							str += "<tr>" +
 						//								"<td>" + data[i].id + "</td>" +
@@ -195,7 +174,7 @@
 							// mobileResponsive: true,
 							height: "500"
 						});
-						tbody.innerHTML = str;
+//						tbody.innerHTML = str;
 					},
 					error: function() {
 						alert("查询失败")
@@ -235,6 +214,22 @@
 					"New row"
 				]);
 			}
+			
+			function addWell(){
+				var plateNumber =$("#plateNumber").val();
+				var VINumber =$("#VINumber").val();
+				var engineNumber =$("#engineNumber").val();
+				var carType =$("#carType").val();
+				var color =$("#color").val();
+				var owernName =$("#owernName").val();
+				var owernPhone =$("#owernPhone").val();
+			 $.ajax({
+					url: "http://localhost:8080/SmartCover/func/well/saveWell.action",
+					type: "post",
+					contentType:"application/json",
+					data:JSON.stringify({wellNo:plateNumber,fLong:VINumber,fLati:engineNumber,province:carType,city:color,district:owernName,street:owernPhone}),
+			});
+		}
 		</script>
 
 		<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>

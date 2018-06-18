@@ -296,53 +296,6 @@
 						}
 					}
 				});
-				setInterval(function (){
-					
-					$.ajax({
-						url: "http://localhost:8080/SmartCover/func/well/getWellInfo.action",
-						type: "get",
-						dataType: "json",
-						success: function(e) {
-							map.clearMap();
-							for(var i = 0; i < e.data.length; i++) {
-								var jfong = [e.data[i].fLong, e.data[i].fLati];
-								var marker = new AMap.Marker({
-									position: jfong,
-									map: map
-								});
-								if(e.data[i].UpCoverStatus==1){
-									e.data[i].UpCoverStatus="关闭"
-								}	
-								if(e.data[i].UpCoverStatus==2){
-									e.data[i].UpCoverStatus="打开"
-								}
-								if(e.data[i].DownCoverStatus==1){
-									e.data[i].DownCoverStatus="关闭"
-								}
-								if(e.data[i].DownCoverStatus==2){
-									e.data[i].DownCoverStatus="打开"
-								}
-								if(e.data[i].VibratingStatus==1){
-									e.data[i].VibratingStatus="震动"
-								}
-								if(e.data[i].VibratingStatus==2){
-									e.data[i].VibratingStatus="震动取消"
-								}
-								marker.setMap(map);
-								marker.NO = i;
-								marker.orderON = e.data[i].orderON;
-								marker.UpCoverStatus = e.data[i].UpCoverStatus;
-								marker.VibratingStatus = e.data[i].VibratingStatus;
-								marker.DownCoverStatus = e.data[i].DownCoverStatus;
-								marker.on('click', markerClick);
-								//marker.emit('click', {
-								//	target: marker
-								//});
-
-							}
-						}
-					});
-				},2000);
 			});
 
 			function findWellPosition() {

@@ -35,4 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			well_No=#{wellNo}
 		</where>
     </update>
+    <insert id="saveWell" parameterType="com.cover.entity.WellLocation">
+        insert into welllocation(well_No,fLong,fLati,province,city,district,street) values (#{wellNo},#{fLong},#{fLati},#{province},#{city},#{district},#{street})
+    </insert>
 </mapper>

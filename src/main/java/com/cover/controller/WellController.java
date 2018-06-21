@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -66,7 +67,13 @@ public class WellController {
 		WellLocation well=wellService.selectWellByWellNO(wellOrder);//String orderNO=request.getParameter("wellOrder");
 		System.out.println(well.toString());
 		return well;
-	}	
+	}
+	
+	@RequestMapping("/saveWell.action")
+	@ResponseBody
+	public void saveWell(@RequestBody WellLocation well) {
+		wellService.saveWell(well);
+	}
 }
 		
 

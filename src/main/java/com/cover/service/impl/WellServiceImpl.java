@@ -27,6 +27,9 @@ public class WellServiceImpl implements WellService{
 	}
 	public void updateWellById(WellStatus well) {
 		wellDao.updateWellById(well);
+	}
+	public void saveWell(WellLocation well) {
+		wellDao.saveWell(well);
 	} 
 
 }

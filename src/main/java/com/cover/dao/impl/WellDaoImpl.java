@@ -34,5 +34,8 @@ public class WellDaoImpl extends BaseDaoImpl<WellLocation> implements WellDao{
 	}
 	public void updateWellById(WellStatus well) {
 		this.getSqlSession().update("well.updateWellById",well);
+	}
+	public void saveWell(WellLocation well) {
+		this.getSqlSession().insert("well.saveWell",well);
 	}		
 }

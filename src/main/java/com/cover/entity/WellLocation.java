@@ -49,5 +49,12 @@ public class WellLocation {
 	}
 	public void setStreet(String street) {
 		this.street = street;
-	}     
+	}
+	@Override
+	public String toString() {
+		return "WellLocation [wellNo=" + wellNo + ", fLong=" + fLong + ", fLati=" + fLati + ", province=" + province
+				+ ", city=" + city + ", district=" + district + ", street=" + street + "]";
+	}  
+	
+	
 }

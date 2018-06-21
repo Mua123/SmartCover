@@ -11,4 +11,5 @@ public interface WellDao{
 	public List<Well> selectAllWell();
 	public WellLocation selectWellByWellNO(Serializable WellNO);
 	public void updateWellById(WellStatus well);
+	public void saveWell(WellLocation well);
 }

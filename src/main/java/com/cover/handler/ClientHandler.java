@@ -8,7 +8,8 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
-import com.cover.entity.Well;
+import com.cover.entity.WellLocation;
+import com.cover.entity.WellStatus;
 import com.cover.service.WellService;
 
 public class ClientHandler extends IoHandlerAdapter{
@@ -56,8 +57,8 @@ public class ClientHandler extends IoHandlerAdapter{
 		
         byte[] data = new byte[ioBuffer.limit()-ioBuffer.position()];
         ioBuffer.get(data);
-        Well well = new Well();
-        well.setId(1);
+        WellStatus well = new WellStatus();
+        well.setWellNo("TX-001");
         String s = new String(data,"UTF-8");
         if(s.startsWith("Up Cover"))
         	if(s.endsWith("Closed"))

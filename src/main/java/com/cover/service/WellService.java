@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.cover.entity.Well;
+import com.cover.entity.WellLocation;
+import com.cover.entity.WellStatus;
 
 public interface WellService {    
     public List<Well> selectAllWell();
-    public Well selectWellByorderON(Serializable orderON);
-    public void updateWellById(Well well);
+    public WellLocation selectWellByWellNO(Serializable WellNO);
+    public void updateWellById(WellStatus well);
+    public void saveWell(WellLocation well);
 }  

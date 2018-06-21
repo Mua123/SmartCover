@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.cover.entity.Well;
+import com.cover.entity.WellLocation;
+import com.cover.entity.WellStatus;
 
 public interface WellDao{  
 	public List<Well> selectAllWell();
-	public Well selectWellByorderON(Serializable orderON);
-	public void updateWellById(Well well);
+	public WellLocation selectWellByWellNO(Serializable WellNO);
+	public void updateWellById(WellStatus well);
+	public void saveWell(WellLocation well);
 }

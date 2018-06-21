@@ -2,15 +2,9 @@ package com.cover.entity;
 
 import java.sql.Timestamp;
 
-public class Well {
-	private String wellNo;
-    private double fLong;
-    private double fLati;
-    private String province;
-    private String city;
-    private String district;
-    private String street;
-    private int wellId;
+public class WellStatus {
+	private int wellId;
+	private String WellNo;
 	private String signalIntensity;
 	private String battery;
 	private String temperature;
@@ -20,53 +14,17 @@ public class Well {
 	private int vibratingStatus;
 	private int authorizationStatus;
 	private Timestamp recordTime;
-	public String getWellNo() {
-		return wellNo;
-	}
-	public void setWellNo(String wellNo) {
-		this.wellNo = wellNo;
-	}
-	public double getfLong() {
-		return fLong;
-	}
-	public void setfLong(double fLong) {
-		this.fLong = fLong;
-	}
-	public double getfLati() {
-		return fLati;
-	}
-	public void setfLati(double fLati) {
-		this.fLati = fLati;
-	}
-	public String getProvince() {
-		return province;
-	}
-	public void setProvince(String province) {
-		this.province = province;
-	}
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
-	public String getDistrict() {
-		return district;
-	}
-	public void setDistrict(String district) {
-		this.district = district;
-	}
-	public String getStreet() {
-		return street;
-	}
-	public void setStreet(String street) {
-		this.street = street;
-	}
 	public int getWellId() {
 		return wellId;
 	}
 	public void setWellId(int wellId) {
 		this.wellId = wellId;
+	}
+	public String getWellNo() {
+		return WellNo;
+	}
+	public void setWellNo(String wellNo) {
+		WellNo = wellNo;
 	}
 	public String getSignalIntensity() {
 		return signalIntensity;
@@ -122,5 +80,6 @@ public class Well {
 	public void setRecordTime(Timestamp recordTime) {
 		this.recordTime = recordTime;
 	}
-
+	
+	
 }

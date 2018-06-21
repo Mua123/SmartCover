@@ -53,7 +53,7 @@
 			}
 			
 			#search_input {
-				width: 150px;
+				width: 260px;
 				height: 30px;
 				/*box-shadow: 0px 2px 0px #c0c0c0;*/
 			}
@@ -157,28 +157,11 @@
       </ul>
     </div>-->
 
-<<<<<<< HEAD
-		<div id="mapContainer" style="position:absolute; z-index:2">
-			<div id="search_style" style="position:absolute; z-index:1">
-				<select id="search_input" name="province">
-				<option value="1">请选择省</option>
-				</select>
-				<select id="search_input" name="city">
-				<option value="2">请选择市</option>
-				</select>
-				<select id="search_input" name="area">
-				<option value="3">请选择区</option>
-				</select>
-				<button id="search_button" type="button" onclick="findWellPosition();">查询</button>
-				
-			</div>
-=======
 		<div id="mapContainer"></div>
 		<div id="search_style" style="position:absolute; z-index:1">
 			<select id="search_input" name="property">
 			</select>
 			<button id="search_button" type="button" onclick="findWellPosition();">查询</button>
->>>>>>> refs/remotes/origin/master
 		</div>
 		<div id="tip">
 			省：
@@ -264,13 +247,11 @@
 						addCluster();
 					}
 				});
-
 				function addCluster() {
 					cluster = new AMap.MarkerClusterer(map, markers, {
 						gridSize: 80
 					});
 				}
-
 				function markerClick(e) {
 					infowindows();
 					var i = e.target.NO;
@@ -290,13 +271,11 @@
 				}
 //				map.setFitView();//地图自适应显示
 			}
-
 //			function addCluster() {
 //				cluster = new AMap.MarkerClusterer(map, markers, {
 //					gridSize: 80
 //				});
 //			}
-
 //			function markerClick(e) {
 //				var i = e.target.NO;
 //				infoWindow[i] = new AMap.InfoWindow({
@@ -314,7 +293,6 @@
 //				infoWindow[i].open(map, e.target.getPosition());
 //			}
 //			map.setFitView();
-
 			//页面选择框初始化
 			$(document).ready(function() {
 				infowindows();
@@ -342,7 +320,6 @@
 					}
 				});
 			});
-
 			function findWellPosition() {
 				var myselect = document.getElementById("search_input");
 				var index = myselect.selectedIndex;
@@ -365,7 +342,6 @@
 					});
 				}
 			}
-
 			function createInfoWindow(title, content) {
 				var info = document.createElement("div");
 				info.className = "info";
@@ -379,21 +355,18 @@
 				top.appendChild(titleD);
 				top.appendChild(closeX);
 				info.appendChild(top);
-
 				// 定义中部内容
 				var middle = document.createElement("div");
 				middle.className = "info-middle";
 				middle.style.backgroundColor = 'white';
 				middle.innerHTML = content;
 				info.appendChild(middle);
-
 				// 定义底部内容
 				var bottom = document.createElement("div");
 				bottom.className = "info-bottom";
 				bottom.style.position = 'relative';
 				bottom.style.top = '0px';
 				bottom.style.left = '-100px';
-
 				//bottom.style.margin = '0 auto';
 				var sharp = document.createElement("img");
 				sharp.src = "https://webapi.amap.com/images/sharp.png";
@@ -401,11 +374,9 @@
 				info.appendChild(bottom);
 				return info;
 			}
-
 			function closeInfoWindow() {
 				map.clearInfoWindow();
 			}
-
 			function getData(data, level) {
 				var bounds = data.boundaries;
 				if(bounds) {
@@ -422,7 +393,6 @@
 					}
 					map.setFitView(); //地图自适应
 				}
-
 				//清空下一级别的下拉列表
 				if(level === 'province') {
 					citySelect.innerHTML = '';
@@ -434,7 +404,6 @@
 				} else if(level === 'district') {
 					areaSelect.innerHTML = '';
 				}
-
 				var subList = data.districtList;
 				if(subList) {
 					var contentSub = new Option('--请选择--');
@@ -452,9 +421,7 @@
 						curList.add(contentSub);
 					}
 				}
-
 			}
-
 			function search(obj) {
 				//清除地图上所有覆盖物
 				for(var i = 0, l = polygons.length; i < l; i++) {
@@ -473,7 +440,6 @@
 					}
 				});
 			}
-
 			function setCenter(obj) {
 				console.log(obj[obj.options.selectedIndex].label)
 				map.setZoom(15);

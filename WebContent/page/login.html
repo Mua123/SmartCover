@@ -57,36 +57,7 @@
   
 </body> 
 <script>
-function checkName() {
-	reg="!/^[0-9a-zA-Z]{0,20}$/";
-	 var username=document.getElementById("username");
-	 	if(!(reg.test(username))){  
-	 		 alert("不是正确的11位手机号"); 
-	var username = document.getElementById("username").value;
-	var pw2 = document.getElementById("pw2").value;
-	if(pw1 == pw2) {
-	document.getElementById("tishi").innerHTML="<font color='green'>两次密码相同</font>";
-	document.getElementById("register").disabled = false;
-	}
-	else {
-	document.getElementById("tishi").innerHTML="<font color='red'>两次密码不相同</font>";
-	document.getElementById("register").disabled = true;
-}
-}
-	$(function(){
-	    // 用户名失去焦点
-	$("#username").blur(function(){
-	 const userName=$('.uname').val();
-	 $(this).next().text("");
-	 if(!/^[0-9a-zA-Z]{0,20}$/.test(userName)){
-	     $(this).next().text('用户名格式输入有误，请重新输入！');
-	 }   
-	});
-	// 密码失去焦点
-	$("#password").blur(function(){
-	 const passWord=$('.pword').val();
-	});
-    
+
     //点击提交
     $("#login").click(function() {  
             var username = $("[name=username]").val();  

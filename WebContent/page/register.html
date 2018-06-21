@@ -174,21 +174,7 @@
 	</script>
 	<script>
 	
-function checkTel() {
-		var Expression=/^1[34578]\d{9}$/;
-		var objExp=new RegExp(Expression);
-		var telephone=document.getElementById("telephone");
-		if(objExp.test(telephone)==true){ 
-		document.getElementById("tel").innerHTML="<font color='green'>可用手机号</font>";
-		document.getElementById("register").disabled = false;
-		
-		 }
-		else {
-		document.getElementById("tel").innerHTML="<font color='red'>不是正确的11位手机号</font>";
-		document.getElementById("register").disabled = true;
-	
-}
-}
+
 function validate() {
 	var pw1 = document.getElementById("pw1").value;
 	var pw2 = document.getElementById("pw2").value;

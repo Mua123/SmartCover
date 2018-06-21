@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>智能井盖系统 - 登录</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="http://localhost:8080/SmartCover/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="http://localhost:8080/SmartCover/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="http://localhost:8080/SmartCover/css/animate.css" rel="stylesheet">
+    <link href="http://localhost:8080/SmartCover/css/style1.css?v=4.1.0" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">SHU</h1>
+
+            </div>
+            <h3>欢迎使用 智能井盖系统</h3>
+
+            <form class="m-t" onsubmit="return false"role="form" action="##" method="">
+                <div class="form-group">
+                    <input type="text"  name="username" class="form-control" placeholder="用户名" id="username" required="" onblur="checkName()">
+                </div>
+                <div class="form-group">
+                    <input type="password"  name="password" class="form-control" placeholder="密码" id="password" required="">
+                </div>
+                <button type="submit" id="login" class="btn btn-primary block full-width m-b">登 录</button>
+
+
+                <p class="text-muted text-center"> <a href="login.html#"><small>忘记密码了？</small></a> | <a href="http://localhost:8080/SmartCover/page/register.html">注册一个新账号</a>
+                </p>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="http://localhost:8080/SmartCover/js/jquery.min.js?v=2.1.4"></script>
+    <script src="http://localhost:8080/SmartCover/js/bootstrap.min.js?v=3.3.6"></script>
+
+  
+</body> 
+<script>
+function checkName() {
+	reg="!/^[0-9a-zA-Z]{0,20}$/";
+	 var username=document.getElementById("username");
+	 	if(!(reg.test(username))){  
+	 		 alert("不是正确的11位手机号"); 
+	var username = document.getElementById("username").value;
+	var pw2 = document.getElementById("pw2").value;
+	if(pw1 == pw2) {
+	document.getElementById("tishi").innerHTML="<font color='green'>两次密码相同</font>";
+	document.getElementById("register").disabled = false;
+	}
+	else {
+	document.getElementById("tishi").innerHTML="<font color='red'>两次密码不相同</font>";
+	document.getElementById("register").disabled = true;
+}
+}
+	$(function(){
+	    // 用户名失去焦点
+	$("#username").blur(function(){
+	 const userName=$('.uname').val();
+	 $(this).next().text("");
+	 if(!/^[0-9a-zA-Z]{0,20}$/.test(userName)){
+	     $(this).next().text('用户名格式输入有误，请重新输入！');
+	 }   
+	});
+	// 密码失去焦点
+	$("#password").blur(function(){
+	 const passWord=$('.pword').val();
+	});
+    
+    //点击提交
+    $("#login").click(function() {  
+            var username = $("[name=username]").val();  
+            var password = $("[name=password]").val();  
+  
+            if (username == '' || password == '') {  
+                alert('错误', "用户名或者密码为空！");  
+                return;  
+            }  
+  
+            /* ajax请求 */  
+            $.ajax({  
+                url : "http://localhost:8080/SmartCover/user/checkLogin",  
+                type : "post",  
+                data : {  
+                    "username" : username,  
+                    "password" : password  
+                },  
+                dataType : "text",  
+                success : function(data) {  
+                    if (data != null && data == 'index') {  
+  
+                        window.location.href = "http://localhost:8080/SmartCover/page/index.html";  
+  
+                    } else if (data != null && data == 'login') {  
+  
+                        alert('错误', "用户名或者密码为空！");  
+                        return;  
+                    }  
+                }  
+            });  
+  
+        });  
+	
+</script>
+  
+</html>

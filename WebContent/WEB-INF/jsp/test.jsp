@@ -9,7 +9,7 @@
     <form action="findUser.action" method="post">
                用户姓名：<input type="text" name="name" /></br>
         <input type="submit" value="查询">
-    </form>
+    </form>ai
     <table width="300px;" border=1>  
     <tr>  
       <td>序号</td>

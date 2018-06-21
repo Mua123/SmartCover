@@ -23,6 +23,7 @@
 		<!-- 2.包扫描:dao,service -->
 		<context:component-scan base-package="com.cover.dao,com.cover.service"/>
 		
+		
 		<!-- 设置消息处理手段 -->
 		<bean id="ClientHandler" class="com.cover.handler.ClientHandler">
 		</bean>

@@ -11,9 +11,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		String uri=request.getRequestURI();  
-	    //判断当前请求地址是否是登录地�?  
+	    //判断当前请求地址是否是登录地�?  
 	    if(!(uri.contains("Login")||uri.contains("login")||uri.contains("register"))){  
-	        //非登录请�?
+	        //非登录请�?
 	        if(request.getSession().getAttribute("user")!=null){  
 	            //说明已经登录过，放行 
 	            return true;
@@ -22,12 +22,13 @@ public class LoginInterceptor implements HandlerInterceptor {
 	        		//如果是静态资源请求，放行
 	        		return true;
 	        	}else{
-	        		//没有登录,跳转到登录界�? 
-	        		response.sendRedirect(request.getContextPath()+"/user/toLogin.action");  
+	        		//没有登录,跳转到登录界�? 
+	        		System.out.println("13245648");
+	        		response.sendRedirect(request.getContextPath()+"/page/login.html");  
 	        	}
 	        }  
 	    }else{  
-	        //登录请求，直接放�?  
+	        //登录请求，直接放�?  
 	    	return true; 
 	    }  
 		return false;

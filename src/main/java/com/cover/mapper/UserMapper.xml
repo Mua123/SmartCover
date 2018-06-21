@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cover.dao.UserDao">
+	
+	
+	<!--用户登录 -->
+	 <select id="findByUsername" resultType="com.cover.entity.User" parameterType="String">
+
+     	select * from userinfo where username = #{username}
+	</select>
+	 <!--增加用户名和密码进行注册  -->
+	 
+    <insert id="registerByUsernameAndPassword"   useGeneratedKeys="true" keyProperty="id" >
+         insert into userinfo (username,name,password,telephone,email)
+         values (#{username},#{name},#{password},#{telephone},#{email})
+    </insert>
+    
+
+</mapper>  

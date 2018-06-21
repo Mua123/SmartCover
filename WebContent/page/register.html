@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>注册</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="http://localhost:8080/SmartCover/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="http://localhost:8080/SmartCover/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="http://localhost:8080/SmartCover/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="http://localhost:8080/SmartCover/css/animate.css" rel="stylesheet">
+    <link href="http://localhost:8080/SmartCover/css/style1.css?v=4.1.0" rel="stylesheet">
+    <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name"></h1>
+
+            </div>
+            <h3>欢迎注册 </h3>
+            <p>创建一个新账户</p>
+            <form class="m-t" role="form" onsubmit="return false" action=" " method="">
+                <div class="form-group">		    
+                    <table style="width:100%">
+                    <td width=60"  align="left">
+		    		<lable>用户名:</lable>
+                    </td>
+                    <td>
+                    <input type="text" class="form-control" name="username" placeholder="请输入用户名" required="">
+                    </td>
+                    </table>
+                </div>
+                
+                <div class="form-group">		    
+                    <table style="width:100%" >
+                    <td width="60"  align="left">
+             		<lable>姓名:</lable>
+                    </td>
+                    <td>
+                    <input type="text" class="form-control" name="name" placeholder="请输入真实姓名" required="">
+                    </td>
+                    </table>
+                </div>
+                
+                <div class="form-group">		    
+                    <table style="width:100%" >
+                    <td width="60"  align="left">       
+		    		<lable>手机号:</lable>
+                    </td>
+                    <td>
+                    <input type="text" class="form-control"  name="telephone"  id="telephone" placeholder="请输入手机号" required="" onkeyup="checkTel()"><span id="tel"></span>
+                    </td>
+                    </table>
+                </div>
+
+                <div class="form-group">		    
+                    <table style="width:100%">
+                    <td width="60"  align="left">
+		    		<lable>邮箱:</lable>
+                    </td>
+                    <td>
+                    <input type="email" class="form-control" name="email" placeholder="请输入邮箱" required="">
+                    </td>
+                    </table>
+                </div>
+
+                <div class="form-group">
+
+                    <table style="width:100%">
+                    <td width="60"  align="left">
+		    		<lable>输入密码:</lable>
+                    </td>
+                    <td>
+                    <input type="password" class="form-control" name="password" id="pw1" placeholder="请输入密码" required="" >
+                    </td>
+                    </table>
+                    
+                </div>
+                <div class="form-group">
+                    <table style="width:100%">
+                    <td width="60"  align="left">
+		    		<lable>确认密码:</lable>
+                    </td>
+                    <td>
+                    <input type="password" class="form-control" name="passwordRepeat" id="pw2" placeholder="请再次输入密码" required="" onkeyup="validate()"><span id="tishi"></span>
+                    </td>
+                    </table>
+     
+                </div>
+                <div class="form-group text-left">
+                    <div class="checkbox i-checks">
+                        <label class="no-padding">
+                            <input type="checkbox"><i></i> 我同意注册协议</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b" id="register">注 册</button>
+
+                <p class="text-muted text-center"><small>已经有账户了？</small><a href="http://localhost:8080/SmartCover/page/login.html">点此登录</a>
+                </p>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="http://localhost:8080/SmartCover/js/jquery.min.js?v=2.1.4"></script>
+    <script src="http://localhost:8080/SmartCover/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- iCheck -->
+    <script src="http://localhost:8080/SmartCover/js/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+    <!--统计代码，可删除-->
+
+</body>
+<script>
+	//点击提交
+ $("#register").click(function () {
+	 var username = $("[name=username]").val(); 
+	 var name = $("[name=name]").val(); 
+     var telephone = $("[name=telephone]").val(); 
+     var email = $("[name=email]").val(); 
+     var password = $("[name=password]").val();  
+     if (username == '' || password == '') {  
+         alert('错误', "用户名或者密码为空！");  
+         return;  
+     }  
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8080/SmartCover/user/register",
+                dataType: 'text',
+                
+                data: {  
+                    "username" : username,  
+                    "name" : name,
+                    "telephone" : telephone,  
+                    "email" : email,
+                    "password" : password,  
+                    
+                },  
+                success: function(data) {  
+                    if (data != null && data == 'success') {  
+  
+                        window.location.href = "http://localhost:8080/SmartCover/page/login.html";  
+  
+                    } else if (data != null && data == 'login') {  
+  
+                        alert('错误', "用户名或者密码为空！");  
+                        return;  
+                    }  
+                }  
+            });  
+  
+        });  
+	</script>
+	<script>
+	
+function checkTel() {
+		var Expression=/^1[34578]\d{9}$/;
+		var objExp=new RegExp(Expression);
+		var telephone=document.getElementById("telephone");
+		if(objExp.test(telephone)==true){ 
+		document.getElementById("tel").innerHTML="<font color='green'>可用手机号</font>";
+		document.getElementById("register").disabled = false;
+		
+		 }
+		else {
+		document.getElementById("tel").innerHTML="<font color='red'>不是正确的11位手机号</font>";
+		document.getElementById("register").disabled = true;
+	
+}
+}
+function validate() {
+	var pw1 = document.getElementById("pw1").value;
+	var pw2 = document.getElementById("pw2").value;
+	if(pw1 == pw2) {
+	document.getElementById("tishi").innerHTML="<font color='green'>两次密码相同</font>";
+	document.getElementById("register").disabled = false;
+	}
+	else {
+	document.getElementById("tishi").innerHTML="<font color='red'>两次密码不相同</font>";
+	document.getElementById("register").disabled = true;
+}
+}
+</script>
+</html>

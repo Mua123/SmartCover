@@ -39,7 +39,7 @@
 			}
 			
 			#search_input {
-				width: 260px;
+				width: 150px;
 				height: 30px;
 				/*box-shadow: 0px 2px 0px #c0c0c0;*/
 			}
@@ -145,11 +145,18 @@
 
 		<div id="mapContainer" style="position:absolute; z-index:2">
 			<div id="search_style" style="position:absolute; z-index:1">
-				<select id="search_input" name="property">
+				<select id="search_input" name="province">
+				<option value="1">请选择省</option>
+				</select>
+				<select id="search_input" name="city">
+				<option value="2">请选择市</option>
+				</select>
+				<select id="search_input" name="area">
+				<option value="3">请选择区</option>
 				</select>
 				<button id="search_button" type="button" onclick="findWellPosition();">查询</button>
+				
 			</div>
-
 		</div>
 		<script type="text/javascript">
 			var map = new AMap.Map("mapContainer", {

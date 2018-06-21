@@ -43,6 +43,6 @@
 	</filter-mapping>
 	
   <welcome-file-list>
-    <welcome-file>page/index.html</welcome-file>
+    <welcome-file>page/login.html</welcome-file>
   </welcome-file-list>
 </web-app>

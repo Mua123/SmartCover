@@ -52,10 +52,16 @@
 				//box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 			}
 			
-			#search_input {
-				width: 200px;
+			.search_input1 {
+				width: 165px;
 				height: 30px;
 				margin-left: 50px;
+				/*box-shadow: 0px 2px 0px #c0c0c0;*/
+			}
+			
+			.search_input {
+				width: 165px;
+				height: 30px;
 				/*box-shadow: 0px 2px 0px #c0c0c0;*/
 			}
 			
@@ -160,8 +166,22 @@
 
 		<div id="mapContainer"></div>
 		<div id="search_style" style="position:absolute; z-index:1">
-			<select id="search_input" name="property"></select>
-			<button id="search_button" type="button" onclick="findWellPosition();">查询</button>
+			<select id="search_upcover" class="search_input1" name="property1">
+				<option selected="selected" value="unselected">--请选择外井盖状态--</option>
+				<option value="upcoveropen">外井盖开启</option>
+				<option value="upcoverclosed">外井盖关闭</option>
+			</select>
+			<select id="search_downcover" class="search_input" name="property2">
+				<option selected="selected" value="unselected">--请选择内井盖状态--</option>
+				<option value="downcoveropen">内井盖开启</option>
+				<option value="downcoverclosed">内井盖关闭</option>
+			</select>
+			<select id="search_vibrating" class="search_input" name="property3">
+				<option selected="selected" value="unselected">--请选择井盖震动状态--</option>
+				<option value="vibrating">井盖震动</option>
+				<option value="novibrating">井盖正常</option>
+			</select>
+			<button id="search_button" type="button" onclick="findWellStatus();">查询</button>
 		</div>
 		<div id="tip">
 			省：
@@ -232,7 +252,7 @@
 							if(e.data[i].VibratingStatus == 2) {
 								e.data[i].VibratingStatus = "震动取消"
 							}
-//							marker.setMap(map);//高德地图貌似不需要这步
+							//							marker.setMap(map);//高德地图貌似不需要这步
 							marker.NO = i;
 							marker.WellNo = e.data[i].WellNo;
 							marker.UpCoverStatus = e.data[i].UpCoverStatus;
@@ -247,11 +267,13 @@
 						addCluster();
 					}
 				});
+
 				function addCluster() {
 					cluster = new AMap.MarkerClusterer(map, markers, {
 						gridSize: 80
 					});
 				}
+
 				function markerClick(e) {
 					infowindows();
 					var i = e.target.NO;
@@ -269,63 +291,21 @@
 					})
 					infoWindow[i].open(map, e.target.getPosition());
 				}
-//				map.setFitView();//地图自适应显示
 			}
-//			function addCluster() {
-//				cluster = new AMap.MarkerClusterer(map, markers, {
-//					gridSize: 80
-//				});
-//			}
-//			function markerClick(e) {
-//				var i = e.target.NO;
-//				infoWindow[i] = new AMap.InfoWindow({
-//					content: "<div class='title'><b>" + e.target.WellNo + '号井盖' + "</b></div><div class='content'>" +
-//						"<img src='http://localhost:8080/SmartCover/images/通信井盖.jpg'>" +
-//						"<b>信号强度:</b>25<br/>" +
-//						"<b>电池电压:</b>6.5V<br/>" +
-//						"<b>当前温度:</b>27°C<br/>" +
-//						"<b>当前湿度:</b>02%rh<br/>" +
-//						"<b>外井盖状态:</b>" + e.target.UpCoverStatus + "<br/>" +
-//						"<b>内井盖状态:</b>" + e.target.DownCoverStatus + "<br/>" +
-//						"<b>井盖震动状态:</b>" + e.target.VibratingStatus + "<br/>",
-//					size: new AMap.Size(250, 0)
-//				})
-//				infoWindow[i].open(map, e.target.getPosition());
-//			}
-//			map.setFitView();
-			//页面选择框初始化
-			$(document).ready(function() {
-				infowindows();
-				$("select[name=property]").empty(); //清空seletct的数据  
-				$.ajax({
-					type: "get", //post请求
-					url: "http://localhost:8080/SmartCover/func/well/getWellInfo.action", //请求后台action 根据需求请求自己的后台数据
-					//					data: {
-					//						"orderON": orderON
-					//					}, //传到后台的参数，后台需要编写get和set方法且和返回数据名相同。
-					dataType: "json", //预期服务器返回的数据类型
-					error: function() { //ajax错误的方法
-					},
-					success: function(e) { //ajax成功的方法 在里卖弄给select的<option>标签赋值
-						//向select中append、option标签
-						var optionString = "<option grade=\'请选择一级属性\' selected = \'selected\'>--请选择井盖号--</option>";
-						var beanList = e.data; //返回的json数据
-						if(beanList) { //判断
-							for(var i = 0; i < beanList.length; i++) { //遍历，动态赋值
-								optionString += "<option grade=\"" + beanList[i].WellNo + "\" value=\"" + beanList[i].WellNo + "\"";
-								optionString += ">" + beanList[i].WellNo + "</option>"; //动态添加数据  
-							}
-							$("select[name=property]").append(optionString); // 为当前name为asd的select添加数据。
-						}
-					}
-				});
-			});
-			function findWellPosition() {
-				var myselect = document.getElementById("search_input");
-				var index = myselect.selectedIndex;
-				var value = myselect.options[index].value;
-				if(value == "--请选择井盖号--") {
-					alert("请选择井盖号！")
+
+			function findWellStatus() {
+				var myselect1 = document.getElementById("search_upcover");
+				var myselect2 = document.getElementById("search_downcover");
+				var myselect3 = document.getElementById("search_vibrating");
+				var index1 = myselect1.selectedIndex
+				var index2 = myselect2.selectedIndex
+				var index3 = myselect3.selectedIndex
+				var value1 = myselect1.options[index1].value;
+				var value2 = myselect2.options[index2].value;
+				var value3 = myselect3.options[index3].value;
+				alert(value1);
+				if(value1 == "unselected"&&value2 == "unselected"&&value3 == "unselected") {
+					alert("请选择至少一种状态！")
 				} else {
 					$.ajax({
 						type: "POST",
@@ -342,6 +322,7 @@
 					});
 				}
 			}
+
 			function createInfoWindow(title, content) {
 				var info = document.createElement("div");
 				info.className = "info";
@@ -355,18 +336,21 @@
 				top.appendChild(titleD);
 				top.appendChild(closeX);
 				info.appendChild(top);
+
 				// 定义中部内容
 				var middle = document.createElement("div");
 				middle.className = "info-middle";
 				middle.style.backgroundColor = 'white';
 				middle.innerHTML = content;
 				info.appendChild(middle);
+
 				// 定义底部内容
 				var bottom = document.createElement("div");
 				bottom.className = "info-bottom";
 				bottom.style.position = 'relative';
 				bottom.style.top = '0px';
 				bottom.style.left = '-100px';
+
 				//bottom.style.margin = '0 auto';
 				var sharp = document.createElement("img");
 				sharp.src = "https://webapi.amap.com/images/sharp.png";
@@ -374,9 +358,11 @@
 				info.appendChild(bottom);
 				return info;
 			}
+
 			function closeInfoWindow() {
 				map.clearInfoWindow();
 			}
+
 			function getData(data, level) {
 				var bounds = data.boundaries;
 				if(bounds) {
@@ -393,6 +379,7 @@
 					}
 					map.setFitView(); //地图自适应
 				}
+
 				//清空下一级别的下拉列表
 				if(level === 'province') {
 					citySelect.innerHTML = '';
@@ -404,6 +391,7 @@
 				} else if(level === 'district') {
 					areaSelect.innerHTML = '';
 				}
+
 				var subList = data.districtList;
 				if(subList) {
 					var contentSub = new Option('--请选择--');
@@ -421,7 +409,9 @@
 						curList.add(contentSub);
 					}
 				}
+
 			}
+
 			function search(obj) {
 				//清除地图上所有覆盖物
 				for(var i = 0, l = polygons.length; i < l; i++) {
@@ -440,6 +430,7 @@
 					}
 				});
 			}
+
 			function setCenter(obj) {
 				console.log(obj[obj.options.selectedIndex].label)
 				map.setZoom(15);

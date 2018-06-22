@@ -230,7 +230,7 @@
 								var jfong = [e.data[i].fLong, e.data[i].fLati];
 								var marker = new AMap.Marker({
 									position: jfong,
-									content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+									//content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
 									offset: new AMap.Pixel(-15, -15),
 									map: map
 								});
@@ -260,15 +260,9 @@
 								marker.on('click', markerClick);
 								markers.push(marker);
 							}
-							addCluster();
+//							addCluster();
 						}
 					});
-
-					function addCluster() {
-						cluster = new AMap.MarkerClusterer(map, markers, {
-							gridSize: 80
-						});
-					}
 
 					function markerClick(e) {
 						var i = e.target.NO;
@@ -288,6 +282,12 @@
 					}
 				}
 			}
+
+//			function addCluster() {
+//				cluster = new AMap.MarkerClusterer(map, markers, {
+//					gridSize: 80
+//				});
+//			}
 
 			function createInfoWindow(title, content) {
 				var info = document.createElement("div");

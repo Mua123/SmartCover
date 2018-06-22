@@ -13,4 +13,6 @@ public interface WellService {
     public WellLocation selectWellByWellNO(Serializable WellNO);
     public void updateWellById(WellStatus well);
     public void saveWell(WellLocation well);
+    public List<Well> selectWellByStatus(Well well);
+	public List<Well> insert(int upstatus, int downstatus, int vibratingstatus);
 }  

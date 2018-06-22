@@ -38,4 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="saveWell" parameterType="com.cover.entity.WellLocation">
         insert into welllocation(well_No,fLong,fLati,province,city,district,street) values (#{wellNo},#{fLong},#{fLati},#{province},#{city},#{district},#{street})
     </insert>
+    <select id="selectWellByStatus" parameterType="com.cover.entity.Well" resultType="com.cover.entity.Well" resultMap="WellResultMap">
+        select * from welllocation,wellstatus where up_cover_status=#{upCoverStatus} and down_cover_status=#{downCoverStatus} and vibrating_status=#{vibratingStatus} and welllocation.well_No=wellstatus.well_No
+    </select>
 </mapper>

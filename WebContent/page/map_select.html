@@ -13,13 +13,6 @@
 		<script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
 		<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
 		<style type="text/css">
-			/*body {
-				font-size: 12px;
-			}
-			.amap-info-close {
-				top: 10px;
-			}*/
-			
 			#tip {
 				background-color: #fff;
 				padding: 0 10px;
@@ -56,13 +49,11 @@
 				width: 165px;
 				height: 30px;
 				margin-left: 50px;
-				/*box-shadow: 0px 2px 0px #c0c0c0;*/
 			}
 			
 			.search_input {
 				width: 165px;
 				height: 30px;
-				/*box-shadow: 0px 2px 0px #c0c0c0;*/
 			}
 			
 			.amap-info-content {
@@ -155,31 +146,22 @@
 	</head>
 
 	<body>
-
-		<!--<div class="search_style">    
-      <ul class="search_content clearfix">
-       <li><label class="l_f">产品名称</label><input name="" type="text"  class="text_add" placeholder="输入品牌名称"  style=" width:250px"/></li>
-     <!--  <li><label class="l_f">添加时间</label><input class="inline laydate-icon" id="start" style=" margin-left:10px;"></li>
-       <li style="width:90px;"><button type="button" class="btn_search"><i class="icon-search"></i>查询</button></li>
-      </ul>
-    </div>-->
-
 		<div id="mapContainer"></div>
 		<div id="search_style" style="position:absolute; z-index:1">
 			<select id="search_upcover" class="search_input1" name="property1">
 				<option selected="selected" value="unselected">--请选择外井盖状态--</option>
-				<option value="upcoveropen">外井盖开启</option>
-				<option value="upcoverclosed">外井盖关闭</option>
+				<option value="2">外井盖开启</option>
+				<option value="1">外井盖关闭</option>
 			</select>
 			<select id="search_downcover" class="search_input" name="property2">
 				<option selected="selected" value="unselected">--请选择内井盖状态--</option>
-				<option value="downcoveropen">内井盖开启</option>
-				<option value="downcoverclosed">内井盖关闭</option>
+				<option value="2">内井盖开启</option>
+				<option value="1">内井盖关闭</option>
 			</select>
 			<select id="search_vibrating" class="search_input" name="property3">
 				<option selected="selected" value="unselected">--请选择井盖震动状态--</option>
-				<option value="vibrating">井盖震动</option>
-				<option value="novibrating">井盖正常</option>
+				<option value="1">井盖震动</option>
+				<option value="2">井盖正常</option>
 			</select>
 			<button id="search_button" type="button" onclick="findWellStatus();">查询</button>
 		</div>
@@ -217,83 +199,9 @@
 					getData(result.districtList[0]);
 				}
 			});
-			// 信息窗体显示
-			function infowindows() {
-				var infoWindow = [];
-				var cluster, markers = [];
-				$.ajax({
-					url: "http://localhost:8080/SmartCover/func/well/getWellInfo.action",
-					type: "get",
-					dataType: "json",
-					success: function(e) {
-						for(var i = 0; i < e.data.length; i++) {
-							var jfong = [e.data[i].fLong, e.data[i].fLati];
-							var marker = new AMap.Marker({
-								position: jfong,
-								content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
-								offset: new AMap.Pixel(-15, -15),
-								map: map
-							});
-							if(e.data[i].UpCoverStatus == 1) {
-								e.data[i].UpCoverStatus = "关闭"
-							}
-							if(e.data[i].UpCoverStatus == 2) {
-								e.data[i].UpCoverStatus = "打开"
-							}
-							if(e.data[i].DownCoverStatus == 1) {
-								e.data[i].DownCoverStatus = "关闭"
-							}
-							if(e.data[i].DownCoverStatus == 2) {
-								e.data[i].DownCoverStatus = "打开"
-							}
-							if(e.data[i].VibratingStatus == 1) {
-								e.data[i].VibratingStatus = "震动"
-							}
-							if(e.data[i].VibratingStatus == 2) {
-								e.data[i].VibratingStatus = "震动取消"
-							}
-							//							marker.setMap(map);//高德地图貌似不需要这步
-							marker.NO = i;
-							marker.WellNo = e.data[i].WellNo;
-							marker.UpCoverStatus = e.data[i].UpCoverStatus;
-							marker.VibratingStatus = e.data[i].VibratingStatus;
-							marker.DownCoverStatus = e.data[i].DownCoverStatus;
-							marker.on('click', markerClick);
-							//marker.emit('click', {
-							//	target: marker
-							//});
-							markers.push(marker);
-						}
-						addCluster();
-					}
-				});
-
-				function addCluster() {
-					cluster = new AMap.MarkerClusterer(map, markers, {
-						gridSize: 80
-					});
-				}
-
-				function markerClick(e) {
-					infowindows();
-					var i = e.target.NO;
-					infoWindow[i] = new AMap.InfoWindow({
-						content: "<div class='title'><b>" + e.target.WellNo + '号井盖' + "</b></div><div class='content'>" +
-							"<img src='http://localhost:8080/SmartCover/images/通信井盖.jpg'>" +
-							"<b>信号强度:</b>25<br/>" +
-							"<b>电池电压:</b>6.5V<br/>" +
-							"<b>当前温度:</b>27°C<br/>" +
-							"<b>当前湿度:</b>02%rh<br/>" +
-							"<b>外井盖状态:</b>" + e.target.UpCoverStatus + "<br/>" +
-							"<b>内井盖状态:</b>" + e.target.DownCoverStatus + "<br/>" +
-							"<b>井盖震动状态:</b>" + e.target.VibratingStatus + "<br/>",
-						size: new AMap.Size(250, 0)
-					})
-					infoWindow[i].open(map, e.target.getPosition());
-				}
-			}
 
 			function findWellStatus() {
+				map.clearMap();
 				var myselect1 = document.getElementById("search_upcover");
 				var myselect2 = document.getElementById("search_downcover");
 				var myselect3 = document.getElementById("search_vibrating");
@@ -303,23 +211,81 @@
 				var value1 = myselect1.options[index1].value;
 				var value2 = myselect2.options[index2].value;
 				var value3 = myselect3.options[index3].value;
-				alert(value1);
-				if(value1 == "unselected"&&value2 == "unselected"&&value3 == "unselected") {
+				var infoWindow = [];
+				if(value1 == "unselected" && value2 == "unselected" && value3 == "unselected") {
 					alert("请选择至少一种状态！")
 				} else {
+					var cluster, markers = [];
 					$.ajax({
 						type: "POST",
 						data: {
-							wellOrder: value,
+							upCoverStatus: value1,
+							downCoverStatus: value2,
+							vibratingStatus: value3,
 						},
-						url: "http://localhost:8080/SmartCover/func/well/getWellData.action",
+						url: "http://localhost:8080/SmartCover/func/well/getWellLocationByStatus.action",
 						dataType: "json",
 						success: function(e) {
-							console.log(e)
-							map.setZoom(17);
-							map.panTo([e.fLong, e.fLati]);
+							for(var i = 0; i < e.data.length; i++) {
+								var jfong = [e.data[i].fLong, e.data[i].fLati];
+								var marker = new AMap.Marker({
+									position: jfong,
+									content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+									offset: new AMap.Pixel(-15, -15),
+									map: map
+								});
+								if(e.data[i].UpCoverStatus == 1) {
+									e.data[i].UpCoverStatus = "关闭"
+								}
+								if(e.data[i].UpCoverStatus == 2) {
+									e.data[i].UpCoverStatus = "打开"
+								}
+								if(e.data[i].DownCoverStatus == 1) {
+									e.data[i].DownCoverStatus = "关闭"
+								}
+								if(e.data[i].DownCoverStatus == 2) {
+									e.data[i].DownCoverStatus = "打开"
+								}
+								if(e.data[i].VibratingStatus == 1) {
+									e.data[i].VibratingStatus = "震动"
+								}
+								if(e.data[i].VibratingStatus == 2) {
+									e.data[i].VibratingStatus = "震动取消"
+								}
+								marker.NO = i;
+								marker.WellNo = e.data[i].WellNo;
+								marker.UpCoverStatus = e.data[i].UpCoverStatus;
+								marker.VibratingStatus = e.data[i].VibratingStatus;
+								marker.DownCoverStatus = e.data[i].DownCoverStatus;
+								marker.on('click', markerClick);
+								markers.push(marker);
+							}
+							addCluster();
 						}
 					});
+
+					function addCluster() {
+						cluster = new AMap.MarkerClusterer(map, markers, {
+							gridSize: 80
+						});
+					}
+
+					function markerClick(e) {
+						var i = e.target.NO;
+						infoWindow[i] = new AMap.InfoWindow({
+							content: "<div class='title'><b>" + e.target.WellNo + '号井盖' + "</b></div><div class='content'>" +
+								"<img src='http://localhost:8080/SmartCover/images/通信井盖.jpg'>" +
+								"<b>信号强度:</b>25<br/>" +
+								"<b>电池电压:</b>6.5V<br/>" +
+								"<b>当前温度:</b>27°C<br/>" +
+								"<b>当前湿度:</b>02%rh<br/>" +
+								"<b>外井盖状态:</b>" + e.target.UpCoverStatus + "<br/>" +
+								"<b>内井盖状态:</b>" + e.target.DownCoverStatus + "<br/>" +
+								"<b>井盖震动状态:</b>" + e.target.VibratingStatus + "<br/>",
+							size: new AMap.Size(250, 0)
+						})
+						infoWindow[i].open(map, e.target.getPosition());
+					}
 				}
 			}
 

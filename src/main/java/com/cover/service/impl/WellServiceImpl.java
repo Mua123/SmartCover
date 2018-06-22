@@ -30,6 +30,15 @@ public class WellServiceImpl implements WellService{
 	}
 	public void saveWell(WellLocation well) {
 		wellDao.saveWell(well);
-	} 
-
+	}
+	public List<Well> selectWellByStatus(Well well) {
+		return wellDao.selectWellByStatus(well);
+	}
+	public List<Well> insert(int upstatus, int downstatus, int vibratingstatus) {
+		Well well = new Well();
+		well.setUpCoverStatus(upstatus);
+		well.setDownCoverStatus(downstatus);
+		well.setVibratingStatus(vibratingstatus);
+		return wellDao.selectWellByStatus(well);
+	}
 }

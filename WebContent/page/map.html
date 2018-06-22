@@ -206,6 +206,7 @@
 					type: "get",
 					dataType: "json",
 					success: function(e) {
+						console.log(e);
 						for(var i = 0; i < e.data.length; i++) {
 							var jfong = [e.data[i].fLong, e.data[i].fLati];
 							var marker = new AMap.Marker({
@@ -253,7 +254,7 @@
 					});
 				}
 				function markerClick(e) {
-					infowindows();
+//					infowindows();
 					var i = e.target.NO;
 					infoWindow[i] = new AMap.InfoWindow({
 						content: "<div class='title'><b>" + e.target.WellNo + '号井盖' + "</b></div><div class='content'>" +
@@ -332,7 +333,7 @@
 						data: {
 							wellOrder: value,
 						},
-						url: "http://localhost:8080/SmartCover/func/well/getWellData.action",
+						url: "http://localhost:8080/SmartCover/func/well/findWellLocation.action",
 						dataType: "json",
 						success: function(e) {
 							console.log(e)
